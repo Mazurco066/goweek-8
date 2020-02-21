@@ -1,15 +1,28 @@
 const { developerRepository } = require('../../../services/repositories/mongo')
-// const { consultaCliente } = require('../../../servicos/consultas/mongo')
+const { developerQuery } = require('../../../services/queries/mongo')
+const { userSearch } = require('../../../services/userSearch/github')
 
 module.exports = (connection) => {
 
+    // Repositories
     const _developerRepository = developerRepository(connection)
-    //const _consultaCliente = consultaCliente(connection)
+    
+    // Queries
+    const _developerQuery = developerQuery(connection)
 
+    // Services
+    const _userSearch = userSearch()
+
+    // Returning repositores, queries and services
     return {
         repositories: {
-            repositorioCliente: _developerRepository
+            developerRepository: _developerRepository
         },
-        queries: {}
+        queries: {
+            developerQuery: _developerQuery
+        },
+        services: {
+            userSearch: _userSearch
+        }
     }
 }

@@ -1,46 +1,42 @@
 // Dependencies
 const { baseResponse } = require('../lib/util');
 
-/**
- * API Controllers.
- * @param {Object} interfaces - commands and queries interface.
- */
+// Mudule tah runs commands and queries
 module.exports = (interfaces) => ({
-    /**
-     * Global method for commands qnd queries execution.
-     * @param {string} methodName - Method name taht fits on object 'requisitions'
-     * @param {Object} req - express requisition.
-     * @param {Object} res - express response.
-     */
-    executar: async (methodName, req, res) => {
+    run: async (methodName, req, res) => {
         const requisition = {
-            /**
-             * GET ...
-             * @param {object} req - express requisition.
-    	     * @returns {Object} {status: {codigo: number, mensagem: string}, dados: Object}.
-             */
-            gravarCliente: async (req) => {
-				// const { id, uf, nome, cidade, cnpjCpf, identificacao } = req.body;
-                // const r = await interfaces.entradaComandos.executar('gravarCliente', {
-                //     dadosCliente: {
-                //         id: id,
-                //         uf: uf,
-                //         nome: nome,
-                //         cidade: cidade,
-                //         cnpjCpf: cnpjCpf,
-                //         identificacao: identificacao
-                //     }
-                // });
-                // return r;
-                return null;
+            // POST to store or update developer
+            storeDeveloper: async (req) => {
+				const { username } = req.body;
+                const r = await interfaces.commandsEntry.run('storeDeveloper', {
+                    developerData: {
+                        user: username
+                    }
+                });
+                return r;
             },
+            // GET to find user by username
+            getDeveloper: async (req) => {
+                const { id } = req.params;
+                const r = await interfaces.queriesEntry.run('getDeveloper', {
+                    developerData: {
+                        user: id
+                    }
+                });
+                return r;
+            },
+            // GET to list all developers
+            listDevelopers: async (req) => {
+                const r = await interfaces.queriesEntry.run('listDevelopers', {});
+                return r;
+            }
         }
         // Global error treatment
         try {
             const r = await requisition[methodName](req);
-            return res.status(r.status.codigo).json(baseResponse(
-                r.status.codigo,
-                r.status.mensagem,
+            return res.status(r.status.code).json(baseResponse(
+                r.status.code,
+                r.status.message,
                 { data: r.data }
             ));
         } catch (err) {
