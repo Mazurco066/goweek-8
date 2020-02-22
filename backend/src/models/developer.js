@@ -13,7 +13,9 @@ module.exports = {
 				generateField('name', developerData.name, compose(toUpper), ''),
 				generateField('user', developerData.user, compose(trim), ''),
 				generateField('bio', developerData.bio, compose(trim), ''),
-				generateField('avatar', developerData.avatar, compose(trim), '')
+				generateField('avatar', developerData.avatar, compose(trim), ''),
+				generateField('likes', developerData.likes, null, []),
+				generateField('dislikes', developerData.dislikes, null, [])
 			].reduce((ac, at) => ac = { ...ac, ...at }, {})
 		}
 
@@ -22,7 +24,9 @@ module.exports = {
 			return pipe(
 				validation.validateUUID(d.id, 'developer id is not a valid UUID', true),
 				validation.validateName(d.name, 'developer name is not valid', true),
-				validation.validateUsername(d.username, 'developer username is not valid', true),
+				validation.validateUsername(d.user, 'developer user is not valid', true),
+				validation.validateArray(d.likes, 'developer likes must be array type'),
+				validation.validateArray(d.dislikes, 'developer dislikes must be array type')
 			)(errors)
 		}
 
@@ -32,6 +36,6 @@ module.exports = {
 		return { data: (errors.length > 0 ? null : immutable(data)), errors }
 	},
 	update: function (developer, changes) {
-		return this.criar({ ...developer, ...changes })
+		return this.create({ ...developer, ...changes })
 	}
 }

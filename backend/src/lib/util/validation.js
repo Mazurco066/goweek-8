@@ -34,9 +34,15 @@ const validateMandatoryField = (value, message, errors) => {
 		errors
 }
 
+const validateArray = (array, message, errors) => {
+	return Array.isArray(array) ? errors : errors.concat([message]);
+}
+
+
 module.exports = {
 	validateName: curry(validateName),
 	validateUsername: curry(validateUsername),
 	validateUUID: curry(validateUUID),
-    validateMandatoryField: curry(validateMandatoryField)
+    validateMandatoryField: curry(validateMandatoryField),
+    validateArray: curry(validateArray)
 }

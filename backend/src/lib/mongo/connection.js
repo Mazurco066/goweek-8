@@ -69,7 +69,7 @@ module.exports = {
 		return new Promise(async (resolve) => {
             // User module indexes
 			await mongoConection.connection.collection('Developers').createIndex(
-				{ id: 1 }, { unique: true, name: 'id' }
+				{ user: 1 }, { unique: true, name: 'user' }
 			)
             // Resolve promise
 			resolve(mongoConection)

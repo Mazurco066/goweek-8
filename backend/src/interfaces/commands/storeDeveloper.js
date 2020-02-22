@@ -14,7 +14,9 @@ module.exports = (developerRepository, userSearch) => ({
 		const r = await p(parameter)
 		
 		// Returning success or error 
-		return baseResponse(r.status.code, r.status.message)
+		return baseResponse(r.status.code, r.status.message, {}, {
+			data: r.developer ? r.developer : null
+		})
 	},
 
 	// Validating parameters

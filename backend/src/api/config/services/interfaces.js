@@ -1,5 +1,5 @@
 const { commandsEntry, queriesEntry } = require('../../../interfaces')
-const { storeDeveloper } = require('../../../interfaces/commands')
+const { dislikeDeveloper, likeDeveloper, storeDeveloper } = require('../../../interfaces/commands')
 const { getDeveloper, listDevelopers } = require('../../../interfaces/queries')
 
 module.exports = (repositories) => {
@@ -10,13 +10,15 @@ module.exports = (repositories) => {
 
 	// Commands list
 	const _commands = {
+		dislikeDeveloper: dislikeDeveloper(developerRepository),
+		likeDeveloper: likeDeveloper(developerRepository),
 		storeDeveloper: storeDeveloper(developerRepository, userSearch)
 	}
 
 	// Queries list
 	const _queries = {
 		getDeveloper: getDeveloper(developerRepository),
-		listDevelopers: listDevelopers(developerQuery)
+		listDevelopers: listDevelopers(developerRepository, developerQuery)
 	}
 
 	// Injecting commands and queries

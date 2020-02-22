@@ -50,6 +50,8 @@ module.exports = (connection) => ({
 					user: developerData.user,
 					bio: developerData.bio,
 					avatar: developerData.avatar,
+					likes: developerData.likes,
+					dislikes: developerData.dislikes
 				}}
 			)
 			const code = (r.result.ok != 1 || r.result.nModified < 1 ? 404 : 200)

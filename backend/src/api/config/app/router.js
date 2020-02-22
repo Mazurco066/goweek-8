@@ -14,6 +14,8 @@ module.exports = controller => app => {
     
     // Commands paths
     app.post('/developers', async (req, res) => await controller.run('storeDeveloper', req, res))
+    app.post('/developers/:id/like', async (req, res) => await controller.run('likeDeveloper', req, res))
+    app.post('/developers/:id/dislike', async (req, res) => await controller.run('dislikeDeveloper', req, res))
 
     // Queries
     app.get('/developers/:id', async (req, res) => await controller.run('getDeveloper', req, res))
