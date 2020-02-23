@@ -1,4 +1,5 @@
-import React, { useState } from 'react'; 
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import {
   Container,
@@ -15,6 +16,8 @@ import logo from '../../assets/images/logo.svg';
 export default function SignIn({ history }) {
 
   const [ username, setUsername ] = useState('')
+
+  const notify = (msg) => toast(msg);
  
   function handleSubmit(e) {
     e.preventDefault();
@@ -33,7 +36,7 @@ export default function SignIn({ history }) {
           history.push(`/devs/${newDev.user}`);
         })
         .catch(err => {
-
+          notify(`Erro ao autenticar seu usuário!`)
         });
       }
     });

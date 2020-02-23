@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
 import {
@@ -26,8 +27,11 @@ export default function DevList({ match })  {
 
   const [ users, setUsers ] = useState([]);
 
+  const notify = (msg) => toast(msg);
+
   useEffect(() => {
     const loadDevelopers = () => {
+      notify('Seja bem vindo ao Tindev!');
       api.get('/developers', {
         headers: { user: match.params.id }
       })
@@ -36,7 +40,9 @@ export default function DevList({ match })  {
           setUsers(response.data.data);
         }
       })
-      .catch(err => {});
+      .catch(err => {
+        notify('Erro ao carregar lista de desenvolvedores!');
+      });
     }
     loadDevelopers()
   }, [match.params.id])
@@ -47,11 +53,12 @@ export default function DevList({ match })  {
     })
     .then(response => {
       if ([200, 201].includes(response.status)) {
-        setUsers(users.filter(dev => dev.user !== target))
+        setUsers(users.filter(dev => dev.user !== target));
+        notify(`Desenvolvedor adicionado a sua lista de matches.`);
       }
     })
     .catch(err => {
-
+      notify(`Erro ao dar match nesse desenvolvedor! Por favor tente novamente.`);
     });
   }
 
@@ -61,11 +68,12 @@ export default function DevList({ match })  {
     })
     .then(response => {
       if ([200, 201].includes(response.status)) {
-        setUsers(users.filter(dev => dev.user !== target))
+        setUsers(users.filter(dev => dev.user !== target));
+        notify(`Desenvolvedor adicionado a sua lista de dislikes.`);
       }
     })
     .catch(err => {
-
+      notify(`Erro ao dar dislike nesse desenvolvedor! Por favor tente novamente.`);
     })
   }
 

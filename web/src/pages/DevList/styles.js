@@ -14,6 +14,12 @@ export const DevelopersList = styled.ul`
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 30px;
     margin-top: 50px;
+    @media (max-width: 450px) {
+        grid-template-columns: 1fr;
+    }
+    @media (min-width: 451px) and (max-width: 654px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
 `;
 
 export const DeveloperItem = styled.li`
