@@ -14,8 +14,10 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongodb": "^3.5.2",
+    "node-redis": "^0.1.7",
     "nodemon": "^2.0.2",
     "ramda": "^0.26.1",
+    "socket.io": "^2.3.0",
     "uuid": "^3.4.0"
   }
 }

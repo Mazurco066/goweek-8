@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import io from 'socket.io-client';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
@@ -29,6 +30,7 @@ export default function DevList({ match })  {
 
   const notify = (msg) => toast(msg);
 
+  // Use effect to load users
   useEffect(() => {
     const loadDevelopers = () => {
       notify('Seja bem vindo ao Tindev!');
@@ -45,6 +47,16 @@ export default function DevList({ match })  {
       });
     }
     loadDevelopers()
+  }, [match.params.id])
+
+  // Use effect to connect to web socket
+  useEffect(() => {
+    const socket = io('http://localhost:3001', { 
+      query: { user: match.params.id }
+    });
+    socket.on('match', dev => {
+      console.log(dev)
+    })
   }, [match.params.id])
 
   function handleLike(target) {

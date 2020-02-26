@@ -1,9 +1,10 @@
 // Dependencies
 const express = require('express')
+const http = require('http')
 const { compose, then } = require('ramda')
 const { connection } = require('./src/lib/mongo')
 const { controller } = require('./src/api')
-const { mongoConnection, interfaces, repositories } = require('./src/api/config/services')
+const { mongoConnection, interfaces, repositories, setupWebsocket } = require('./src/api/config/services')
 const { middlewares, router } = require('./src/api/config/app')
 
 // App inicialization
@@ -22,12 +23,17 @@ const initApp = async () => {
 		const configureRouter = router(controller)
 		const _c = compose(configureRouter, configureMiddlewares, createApp)
 		const _app = _c()
-		return _app
+		return http.Server(_app)
 	}
 	
 	// Generating express app
 	const generateApp = compose(then(configApp), createServices)
 	const _app = await generateApp(connection)
+
+	// Setup web socket
+	setupWebsocket(_app)
+	
+	// Returning app.
 	return _app
 }
 

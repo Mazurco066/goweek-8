@@ -1,5 +1,6 @@
 const { developer } = require('../../models')
 const { proccessing, baseResponse } = require('../../lib/util')
+const { findConnections, sendMessage } = require('../../api/config/services/websocket')
 
 module.exports = (developerRepository) => ({
 	// Running store developer command
@@ -64,12 +65,22 @@ module.exports = (developerRepository) => ({
         if (!currentDev || !targetDev) {
             return baseResponse(404, 'you are trying to like an invalid user', data)
         } else {
+            // Already matched user
             if (currentDev.likes.includes(targetDev.id)) {
                 return baseResponse(400, 'you already matched this Developer', data)
             }
+            // Match between users
+            if (targetDev.likes.includes(currentDev.id)) {
+                const socket1 = findConnections(currentDev.user)
+                const socket2 = findConnections(targetDev.user)
+                if (socket1) sendMessage(socket1, 'match', targetDev)
+                if (socket2) sendMessage(socket2, 'match', currentDev)
+            }
+            // Updating user likes
             const updatedUser = developer.update(currentDev, {
                 likes: [ ...currentDev.likes, targetDev.id ]
             })
+            // Returning...
             return baseResponse(200, 'Developer successfully matched', data, {
                 updatedUser: updatedUser.data
             })
